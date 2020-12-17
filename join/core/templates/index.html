@@ -1,55 +1,39 @@
 {% extends 'base.html' %}
-{% load static %}
 {% block content %}
-<div id="googleMap" style="width:500px;height:380px;"></div>
-<script
-src="http://maps.googleapis.com/maps/api/js">
-</script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    function map(data){
-        var myCenter=new google.maps.LatLng(-19.1513472,-45.4493974);
-        var locations = [
-          ['Bondi Beach', -19.9122886, -43.9389298, 4]
+
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5YOvwSIww4pCFl8guPgX4kTgIRN4KJMk&callback=initMap&libraries=&v=weekly"
+      defer
+    ></script>
+    <style type="text/css">
+      /* Set the size of the div element that contains the map */
+      #map {
+        height: 400px;
+        /* The height is 400 pixels */
+        width: 100%;
+        /* The width is the width of the web page */
+      }
+    </style>
+    <h3>Join Maps</h3>
+    <!--The div element for the map -->
+    <div id="map"></div>
+
+    <script>
+      function initMap() {
+        const uluru = [
+            { lat: -19.1513472, lng: -45.4493974 }
         ];
-        function initialize()
-        {
-        var mapProp = {
-          center:myCenter,
-          zoom:5,
-          mapTypeId:google.maps.MapTypeId.ROADMAP
-          };
-
-        var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
-
-        var marker, i;
-        for (i = 0; i < data.length; i++) {
-        console.log(data)
-          marker = new google.maps.Marker({
-            position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
-            map: map
-          });
-          }
-
-        marker.setMap(map);
-        }
-
-        google.maps.event.addDomListener(window, 'load', initialize);
-    }
-
-    function getLocations(){
-        $.ajax({
-            url: 'locations/',
-            type: 'get',
-            success: function(data) {
-                map(data)
-            },
-            failure: function(data) {
-                alert('Um erro aconteceu, contate o administrador');
-            }
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 4,
+          center: uluru[0],
         });
-    }
-
-    getLocations()
-</script>
-{% endblock content %}
+        console.log(uluru)
+        for(i = 0; i < uluru.length; i++ ){
+            const marker = new google.maps.Marker({
+              position: uluru[i],
+              map: map,
+            });
+         };
+      }
+    </script>
+{% endblock %}
