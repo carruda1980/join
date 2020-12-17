@@ -10,7 +10,7 @@ def home(request):
     return render(request, 'index.html')
 
 
-class Location(APIView):
+class Locations(APIView):
     def get(self, request, format=None):
         snippets = UserLocation.objects.all()
         serializer = UserLocationSerializer(snippets, many=True)
