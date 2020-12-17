@@ -1,5 +1,36 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<div id="googleMap" style="width:500px;height:380px;"></div>
+<script
+src="http://maps.googleapis.com/maps/api/js">
+</script>
+<script>
+    var myCenter=new google.maps.LatLng(-19.1513472,-45.4493974);
+    var locations = [
+      ['Bondi Beach', -19.9122886, -43.9389298, 4]
+    ];
+    function initialize()
+    {
+    var mapProp = {
+      center:myCenter,
+      zoom:5,
+      mapTypeId:google.maps.MapTypeId.ROADMAP
+      };
 
+    var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map
+      });}
+
+    marker.setMap(map);
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
 {% endblock content %}
