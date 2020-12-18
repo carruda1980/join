@@ -68,40 +68,40 @@
 
 {% block script %}
 <script>
-<!--    function getUserLocations(  ){-->
-<!--         var retorno;-->
-<!--             $.ajax({-->
-<!--                url:    "/locations/",-->
-<!--                type:   "get",-->
-<!--                dataType:"json",-->
-<!--                async: false,-->
-<!--                success: function( data ){-->
-<!--                    retorno = data;-->
-<!--                }-->
-<!--            });-->
-<!--         return retorno;-->
-<!--    }-->
+    function getUserLocations(  ){
+         var retorno;
+             $.ajax({
+                url:    "/locations/",
+                type:   "get",
+                dataType:"json",
+                async: false,
+                success: function( data ){
+                    retorno = data;
+                }
+            });
+         return retorno;
+    }
 
-<!--    function initMap() {-->
-<!--        var lista = []-->
-<!--        var item = getUserLocations();-->
+    function initMap() {
+        var lista = []
+        var item = getUserLocations();
 
-<!--        for (i = 0; i < item.length; i++) {-->
-<!--          var dict = { lat: parseInt(item[i].latitude), lng: parseInt(item[i].longitude) };-->
-<!--          lista.push(dict)-->
-<!--        }-->
+        for (i = 0; i < item.length; i++) {
+          var dict = { lat: parseInt(item[i].latitude), lng: parseInt(item[i].longitude) };
+          lista.push(dict)
+        }
 
-<!--        const map = new google.maps.Map(document.getElementById("map"), {-->
-<!--          zoom: 4,-->
-<!--          center: lista[0],-->
-<!--        });-->
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 4,
+          center: lista[0],
+        });
 
-<!--        for(i = 0; i < lista.length; i++ ){-->
-<!--            const marker = new google.maps.Marker({-->
-<!--              position: lista[i],-->
-<!--              map: map,-->
-<!--            });-->
-<!--         };-->
-<!--    }-->
+        for(i = 0; i < lista.length; i++ ){
+            const marker = new google.maps.Marker({
+              position: lista[i],
+              map: map,
+            });
+         };
+    }
 </script>
 {% endblock %}

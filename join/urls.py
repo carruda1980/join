@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from join.core.views import home, Locations
 urlpatterns = [
-    path('', home),
+    path('', home, name='home'),
     path('locations/', Locations.as_view(), name='user_location'),
 
     path('admin/', admin.site.urls),

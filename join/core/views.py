@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -15,7 +15,7 @@ def home(request):
         form = UserLocationForm(request.POST)
         if form.is_valid():
             form.save()
-            return render(request, 'index.html', {'form': form})
+            return redirect('home')
         else:
             return render(request, 'index.html', {'form': form})
 
