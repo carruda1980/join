@@ -20,7 +20,7 @@ def home(request):
             form = UserLocationForm(request.POST, instance=location)
             if form.is_valid():
                 form.save()
-                return render(request, 'index.html', {'msg': True})
+                return redirect('home')
             else:
                 return render(request, 'index.html', {'form': form})
 
@@ -29,9 +29,15 @@ def home(request):
             form = UserLocationForm(request.POST)
             if form.is_valid():
                 form.save()
-                return render(request, 'index.html', {'msg': True})
+                return redirect('home')
             else:
                 return render(request, 'index.html', {'form': form})
+
+
+def delete(request):
+    user_location = get_object_or_404(UserLocation, pk=int(request.POST.get('marker_id')))
+    user_location.delete()
+    return redirect('home')
 
 
 class Locations(APIView):

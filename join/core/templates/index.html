@@ -23,12 +23,7 @@
         </div>
         <!-- /Error messaging -->
     {% endif %}
-    {% if msg %}
-        <div class="alert alert-success alert-dismissible">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>Successo!</strong> Registro salvo no banco.
-        </div>
-    {% endif %}
+
     <div id="map"></div>
 
     <!-- Modal novo maker -->
@@ -106,6 +101,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Salvar</button>
+                    <button type="button" id="excluirUserLocation" class="btn btn-danger">Excluir</button>
+
                 </div>
             </form>
           </div>
@@ -136,7 +133,7 @@
             type:'GET',
             data:{
                 'id':marker_id,
-                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
             },
             success:function(json){
                 document.querySelector('input[id=marker_id]').value = json[0].id;
@@ -151,6 +148,28 @@
             },
         });
     }
+
+    $("#excluirUserLocation").click( function()
+           {
+            $.ajax({
+            url:'/delete/',
+            type:'POST',
+            data: {
+                marker_id: $("#marker_id").val()
+            },
+            beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                },
+            success:function(json){
+                location.reload();
+            },
+            error:function(){
+                console.log('error')
+            },
+        });
+           }
+        );
+
     function initMap() {
         var lista = []
         var item = getUserLocations();
@@ -167,7 +186,7 @@
 
         const map = new google.maps.Map(document.getElementById("map"), {
           zoom: 4,
-          center: lista[0],
+          center: {lat: -23.5572404, lng: -46.6609831},
         });
 
         for(i = 0; i < lista.length; i++ ){

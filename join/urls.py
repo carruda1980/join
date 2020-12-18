@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from join.core.views import home, Locations
+from join.core.views import home, Locations, delete
 urlpatterns = [
     path('', home, name='home'),
     path('locations/', Locations.as_view(), name='user_location'),
+    path('delete/', delete, name='delete'),
 
     path('admin/', admin.site.urls),
 ]
