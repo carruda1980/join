@@ -8,8 +8,16 @@ from join.core.serializers import UserLocationSerializer
 
 
 def home(request):
-    form = UserLocationForm()
-    return render(request, 'index.html', {'form': form})
+    if request.method == 'GET':
+        form = UserLocationForm()
+        return render(request, 'index.html', {'form': form})
+    else:
+        form = UserLocationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, 'index.html', {'form': form})
+        else:
+            return render(request, 'index.html', {'form': form})
 
 
 class Locations(APIView):
@@ -17,6 +25,3 @@ class Locations(APIView):
         snippets = UserLocation.objects.all()
         serializer = UserLocationSerializer(snippets, many=True)
         return Response(serializer.data)
-
-    def post(self, request, format=None):
-        print('teste')
