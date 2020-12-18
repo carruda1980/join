@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -8,20 +8,39 @@ from join.core.serializers import UserLocationSerializer
 
 
 def home(request):
+    # Se for um request vazio retorna o form zerado
     if request.method == 'GET':
         form = UserLocationForm()
         return render(request, 'index.html', {'form': form})
     else:
-        form = UserLocationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
+        # Se no request vier o id do marker entende-se que é atualizar, e faz as devidas validações
+        marker_id = True if request.POST.get('marker_id') else False
+        if marker_id:
+            location = get_object_or_404(UserLocation, pk=request.POST.get('marker_id'))
+            form = UserLocationForm(request.POST, instance=location)
+            if form.is_valid():
+                form.save()
+                return render(request, 'index.html', {'msg': True})
+            else:
+                return render(request, 'index.html', {'form': form})
+
+        # Caso contrario apenas salva ou retorna erro o form com seus respectivos valores
         else:
-            return render(request, 'index.html', {'form': form})
+            form = UserLocationForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return render(request, 'index.html', {'msg': True})
+            else:
+                return render(request, 'index.html', {'form': form})
 
 
 class Locations(APIView):
     def get(self, request, format=None):
-        snippets = UserLocation.objects.all()
-        serializer = UserLocationSerializer(snippets, many=True)
-        return Response(serializer.data)
+        if request.GET.get('id'):
+            locations = UserLocation.objects.filter(pk=request.GET.get('id'))
+            serializer = UserLocationSerializer(locations, many=True)
+            return Response(serializer.data)
+        else:
+            locations = UserLocation.objects.all()
+            serializer = UserLocationSerializer(locations, many=True)
+            return Response(serializer.data)
