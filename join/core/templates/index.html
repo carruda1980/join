@@ -1,39 +1,45 @@
 {% extends 'base.html' %}
 {% block content %}
-
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5YOvwSIww4pCFl8guPgX4kTgIRN4KJMk&callback=initMap&libraries=&v=weekly"
-      defer
-    ></script>
-    <style type="text/css">
-      /* Set the size of the div element that contains the map */
-      #map {
-        height: 400px;
-        /* The height is 400 pixels */
-        width: 100%;
-        /* The width is the width of the web page */
-      }
-    </style>
     <h3>Join Maps</h3>
-    <!--The div element for the map -->
     <div id="map"></div>
+{% endblock %}
 
-    <script>
-      function initMap() {
-        const uluru = [
-            { lat: -19.1513472, lng: -45.4493974 }
-        ];
+{% block script %}
+<script>
+    function getUserLocations(  ){
+         var retorno;
+             $.ajax({
+                url:    "/locations/",
+                type:   "get",
+                dataType:"json",
+                async: false,
+                success: function( data ){
+                    retorno = data;
+                }
+            });
+         return retorno;
+    }
+
+    function initMap() {
+        var lista = []
+        var item = getUserLocations();
+
+        for (i = 0; i < item.length; i++) {
+          var dict = { lat: parseInt(item[i].latitude), lng: parseInt(item[i].longitude) };
+          lista.push(dict)
+        }
+
         const map = new google.maps.Map(document.getElementById("map"), {
           zoom: 4,
-          center: uluru[0],
+          center: lista[0],
         });
-        console.log(uluru)
-        for(i = 0; i < uluru.length; i++ ){
+
+        for(i = 0; i < lista.length; i++ ){
             const marker = new google.maps.Marker({
-              position: uluru[i],
+              position: lista[i],
               map: map,
             });
          };
-      }
-    </script>
+    }
+</script>
 {% endblock %}

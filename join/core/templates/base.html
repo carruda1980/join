@@ -5,6 +5,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <title>Join Map</title>
+        <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5YOvwSIww4pCFl8guPgX4kTgIRN4KJMk&callback=initMap&libraries=&v=weekly"
+            defer
+        ></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style type="text/css">
+      #map {
+        height: 400px;
+        width: 100%;
+      }
+    </style>
     </head>
 	<body>
     <div class="container">
@@ -17,5 +28,8 @@
         </div>
       </div>
     </div>
+        {% block script %}
+
+        {% endblock %}
     </body>
 </html>
