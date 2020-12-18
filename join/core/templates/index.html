@@ -87,7 +87,12 @@
         var item = getUserLocations();
 
         for (i = 0; i < item.length; i++) {
-          var dict = { lat: parseInt(item[i].latitude), lng: parseInt(item[i].longitude) };
+          var dict = {
+                        id: item[i].id,
+                        nome: item[i].nome,
+                        lat: parseInt(item[i].latitude),
+                        lng: parseInt(item[i].longitude)
+                     };
           lista.push(dict)
         }
 
@@ -97,11 +102,16 @@
         });
 
         for(i = 0; i < lista.length; i++ ){
-            const marker = new google.maps.Marker({
+            let marker = new google.maps.Marker({
               position: lista[i],
               map: map,
+              title: lista[i].nome,
+              id: lista[i].id,
             });
-         };
+            google.maps.event.addListener(marker, 'click', function() {
+
+            });
+        };
     }
 </script>
 {% endblock %}
